@@ -19,6 +19,8 @@ const styleLoadersArray = [
       },
     },
   },
+   // 添加 postcss-loader
+  'postcss-loader',
 ];
 
 // 加载配置文件
@@ -32,8 +34,9 @@ const baseConfig: Configuration = {
   output: {
     filename: 'static/js/[name].js', // 每个输出js的名称
     path: path.join(__dirname, '../dist'), // 打包结果输出路径
-    clean: true, // webpack4需要配置clean-webpack-plugin来删除dist文件,webpack5内置了
+    clean: true, // webpack4需要配置 clean-webpack-plugin 来删除dist文件, webpack5 内置了
     publicPath: '/', // 打包后文件的公共前缀路径
+    assetModuleFilename: 'images/[hash][ext][query]'
   },
   // loader 配置
   module: {
@@ -41,6 +44,22 @@ const baseConfig: Configuration = {
       {
         test: /.(ts|tsx)$/, // 匹配.ts, tsx文件
         use: 'babel-loader',
+      },
+      {
+        test: /\.(png|jpeg|gif|svg|jpg|webp)$/i, // 匹配图片文件
+        type: "asset", // type选择asset
+        parser: {
+          dataUrlCondition: {
+            maxSize: 20 * 1024, // 小于10kb转base64
+          }
+        },
+        generator:{ 
+          filename:'static/images/[hash][ext][query]', // 文件输出目录和命名
+        },
+      },
+      {
+        test: cssRegex, //匹配 css 文件
+        use: styleLoadersArray,
       },
       {
         test: lessRegex,
@@ -58,10 +77,6 @@ const baseConfig: Configuration = {
             },
           },
         ],
-      },
-      {
-        test: cssRegex, //匹配 css 文件
-        use: styleLoadersArray,
       },
     ],
   },
