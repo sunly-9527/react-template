@@ -1,4 +1,4 @@
-import { Interceptor, FetchOptions } from './typings';
+import { Interceptor, FetchOptions } from './typings'
 
 /**
  * A function that serves as a request interceptor.
@@ -8,99 +8,102 @@ import { Interceptor, FetchOptions } from './typings';
  */
 
 class FetchRequester {
-  private interceptors: Interceptor[] = [];
-  private pendingRequests: Map<string, Promise<any>> = new Map();
-  private throttleMap: Map<string, number> = new Map();
-  private loading = false;
+  private interceptors: Interceptor[] = []
+  private pendingRequests: Map<string, Promise<any>> = new Map()
+  private throttleMap: Map<string, number> = new Map()
+  private loading = false
 
   use(interceptor: Interceptor) {
-    this.interceptors.push(interceptor);
+    this.interceptors.push(interceptor)
   }
 
   async request<T>(url: string, options: FetchOptions = {}): Promise<T> {
-    this.loading = true;
+    this.loading = true
 
     for (const interceptor of this.interceptors) {
       if (interceptor.onRequest) {
-        options = interceptor.onRequest(url, options);
+        options = interceptor.onRequest(url, options)
       }
     }
 
-    const now = Date.now();
-    const lastRequestTime = this.throttleMap.get(url);
+    const now = Date.now()
+    const lastRequestTime = this.throttleMap.get(url)
     if (lastRequestTime && now - lastRequestTime < 1000) {
-      throw new Error('Request throttled');
+      throw new Error('Request throttled')
     }
-    this.throttleMap.set(url, now);
+    this.throttleMap.set(url, now)
 
-    const requestKey = `${options.method || 'GET'}:${url}`;
+    const requestKey = `${options.method || 'GET'}:${url}`
     if (this.pendingRequests.has(requestKey)) {
-      return this.pendingRequests.get(requestKey) as Promise<T>;
+      return this.pendingRequests.get(requestKey) as Promise<T>
     }
 
     const requestPromise = fetch(url, {
       method: options.method || 'GET',
       headers: {
         'Content-Type': 'application/json',
-        ...options.headers,
+        ...options.headers
       },
-      body: options.body ? JSON.stringify(options.body) : undefined,
-    }).then(async response => {
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
-      }
-      let data = await response.json();
-
-      for (const interceptor of this.interceptors) {
-        if (interceptor.onResponse) {
-          data = interceptor.onResponse(data);
+      body: options.body ? JSON.stringify(options.body) : undefined
+    })
+      .then(async response => {
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`)
         }
-      }
+        let data = await response.json()
 
-      return data as T;
-    }).catch(error => {
-      for (const interceptor of this.interceptors) {
-        if (interceptor.onError) {
-          error = interceptor.onError(error);
+        for (const interceptor of this.interceptors) {
+          if (interceptor.onResponse) {
+            data = interceptor.onResponse(data)
+          }
         }
-      }
-      throw error;
-    }).finally(() => {
-      this.pendingRequests.delete(requestKey);
-      this.loading = false;
-    });
 
-    this.pendingRequests.set(requestKey, requestPromise);
-    return requestPromise;
+        return data as T
+      })
+      .catch(error => {
+        for (const interceptor of this.interceptors) {
+          if (interceptor.onError) {
+            error = interceptor.onError(error)
+          }
+        }
+        throw error
+      })
+      .finally(() => {
+        this.pendingRequests.delete(requestKey)
+        this.loading = false
+      })
+
+    this.pendingRequests.set(requestKey, requestPromise)
+    return requestPromise
   }
 
   isLoading() {
-    return this.loading;
+    return this.loading
   }
 }
 
 const client = new FetchRequester().use({
   onRequest: (url, options) => {
-    console.log('Request Interceptor:', url, options);
-    return options;
+    console.log('Request Interceptor:', url, options)
+    return options
   },
   onResponse: response => {
-    console.log('Response Interceptor:', response);
-    return response;
+    console.log('Response Interceptor:', response)
+    return response
   },
   onError: error => {
-    console.error('Error Interceptor:', error);
-    return error;
-  },
-});
+    console.error('Error Interceptor:', error)
+    return error
+  }
+})
 
-(async () => {
+;(async () => {
   try {
     const response = await client.request<{ data: string }>('https://api.example.com/data', {
-      method: 'GET',
-    });
-    console.log('Response:', response);
+      method: 'GET'
+    })
+    console.log('Response:', response)
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error)
   }
-})();
+})()

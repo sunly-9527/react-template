@@ -1,23 +1,23 @@
-import { MutableRefObject } from 'react';
-import { Service, Options, Subscribe, FetchState } from './typings';
-import useLatest from './useLatest';
-import useCreation from './useCreation';
-import useUpdate from './useUpdate';
-import useUnmount from './useUnmount';
-import useMount from './useMount';
-import useMemoizedFn from './useMemoizedFn';
+import { MutableRefObject } from 'react'
+import { Service, Options, Subscribe, FetchState } from './typings'
+import useLatest from './useLatest'
+import useCreation from './useCreation'
+import useUpdate from './useUpdate'
+import useUnmount from './useUnmount'
+import useMount from './useMount'
+import useMemoizedFn from './useMemoizedFn'
 
-import { isFunction } from '@/utils';
+import { isFunction } from '@/utils'
 
 class Fetch<TData, TParams extends any[]> {
-  count: number = 0;
+  count: number = 0
 
   state: FetchState<TData, TParams> = {
     loading: false,
     params: undefined,
     data: undefined,
-    error: undefined,
-  };
+    error: undefined
+  }
 
   constructor(
     public serviceRef: MutableRefObject<Service<TData, TParams>>,
@@ -28,96 +28,96 @@ class Fetch<TData, TParams extends any[]> {
     this.state = {
       ...this.state,
       loading: !options.manual,
-      ...initState,
-    };
+      ...initState
+    }
   }
 
   setState(s: Partial<FetchState<TData, TParams>> = {}) {
     this.state = {
       ...this.state,
-      ...s,
-    };
-    this.subscribe();
+      ...s
+    }
+    this.subscribe()
   }
 
   async runAsync(...params: TParams): Promise<TData> {
-    this.count += 1;
-    const currentCount = this.count;
+    this.count += 1
+    const currentCount = this.count
 
     this.setState({
       params,
       ...this.state,
-      loading: true,
-    });
+      loading: true
+    })
 
-    this.options.onBefore?.(params);
+    this.options.onBefore?.(params)
 
     try {
-      const res = await this.serviceRef.current(...params);
+      const res = await this.serviceRef.current(...params)
 
       if (currentCount !== this.count) {
-        return new Promise(() => {});
+        return new Promise(() => {})
       }
 
       this.setState({
         data: res,
         error: undefined,
-        loading: false,
-      });
+        loading: false
+      })
 
-      this.options.onSuccess?.(res, params);
+      this.options.onSuccess?.(res, params)
 
-      this.options.onFinally?.(params, res, undefined);
+      this.options.onFinally?.(params, res, undefined)
 
-      return res;
+      return res
     } catch (error: any) {
       if (currentCount !== this.count) {
-        return new Promise(() => {});
+        return new Promise(() => {})
       }
 
       this.setState({
         error,
-        loading: false,
-      });
+        loading: false
+      })
 
-      this.options.onError?.(error, params);
+      this.options.onError?.(error, params)
 
-      this.options.onFinally?.(params, undefined, error);
+      this.options.onFinally?.(params, undefined, error)
 
-      throw error;
+      throw error
     }
   }
 
   run(...params: TParams) {
-    this.runAsync(...params).catch((error) => {
+    this.runAsync(...params).catch(error => {
       if (!this.options.onError) {
-        console.error(error);
+        console.error(error)
       }
-    });
+    })
   }
 
   cancel() {
-    this.count += 1;
+    this.count += 1
     this.setState({
-      loading: false,
-    });
+      loading: false
+    })
   }
 
   refresh() {
     // @ts-ignore
-    this.run(...(this.state.params || []));
+    this.run(...(this.state.params || []))
   }
 
   refreshAsync() {
     // @ts-ignore
-    return this.runAsync(...(this.state.params || []));
+    return this.runAsync(...(this.state.params || []))
   }
 
   mutate(data?: TData | ((oldData?: TData) => TData | undefined)) {
-    const targetData = isFunction(data) ? data(this.state.data) : data;
+    const targetData = isFunction(data) ? data(this.state.data) : data
     this.setState({
-      data: targetData,
-    });
+      data: targetData
+    })
   }
 }
 
@@ -127,31 +127,31 @@ const useRequest = <TData, TParams extends any[]>(
 ) => {
   const fetchOptions = {
     manual: options?.manual || false,
-    ...options,
-  };
+    ...options
+  }
 
-  const serviceRef = useLatest(service);
+  const serviceRef = useLatest(service)
 
-  const update = useUpdate();
+  const update = useUpdate()
 
   const fetchInstance = useCreation(() => {
-    return new Fetch<TData, TParams>(serviceRef, fetchOptions, update);
-  }, []);
+    return new Fetch<TData, TParams>(serviceRef, fetchOptions, update)
+  }, [])
 
-  fetchInstance.options = fetchOptions;
+  fetchInstance.options = fetchOptions
 
   useMount(() => {
     if (!options?.manual) {
       // useCachePlugin can set fetchInstance.state.params from cache when init
-      const params = fetchInstance.state.params || options?.defaultParams || [];
+      const params = fetchInstance.state.params || options?.defaultParams || []
       // @ts-ignore
-      fetchInstance.run(...params);
+      fetchInstance.run(...params)
     }
-  });
+  })
 
   useUnmount(() => {
-    fetchInstance.cancel();
-  });
+    fetchInstance.cancel()
+  })
 
   return {
     loading: fetchInstance.state.loading,
@@ -163,8 +163,8 @@ const useRequest = <TData, TParams extends any[]>(
     refreshAsync: useMemoizedFn(fetchInstance.refreshAsync.bind(fetchInstance)),
     run: useMemoizedFn(fetchInstance.run.bind(fetchInstance)),
     runAsync: useMemoizedFn(fetchInstance.runAsync.bind(fetchInstance)),
-    mutate: useMemoizedFn(fetchInstance.mutate.bind(fetchInstance)),
-  };
-};
+    mutate: useMemoizedFn(fetchInstance.mutate.bind(fetchInstance))
+  }
+}
 
-export default useRequest;
+export default useRequest

@@ -1,45 +1,45 @@
-import ResizeObserver from 'resize-observer-polyfill';
-import useEffectWithTarget from './useLayoutEffectWithTarget';
-import useRafState from './useRefState';
-import { getTargetElement } from '@/utils';
-import { BasicTarget } from './typings';
+import ResizeObserver from 'resize-observer-polyfill'
+import useEffectWithTarget from './useLayoutEffectWithTarget'
+import useRafState from './useRefState'
+import { getTargetElement } from '@/utils'
+import { BasicTarget } from './typings'
 
 type Size = {
-  width: number;
-  height: number;
-};
+  width: number
+  height: number
+}
 
 const useSize = (target: BasicTarget): Size | undefined => {
-  const [size, setSize] = useRafState<Size>();
+  const [size, setSize] = useRafState<Size>()
 
   useEffectWithTarget(
     () => {
-      const el = getTargetElement(target);
+      const el = getTargetElement(target)
 
       if (!el) {
-        return;
+        return
       }
 
-      const resizeObserver = new ResizeObserver((entries) => {
-        entries.forEach((entry) => {
-          const { clientWidth, clientHeight } = entry.target;
+      const resizeObserver = new ResizeObserver(entries => {
+        entries.forEach(entry => {
+          const { clientWidth, clientHeight } = entry.target
           setSize({
             width: clientWidth,
-            height: clientHeight,
-          });
-        });
-      });
+            height: clientHeight
+          })
+        })
+      })
 
-      resizeObserver.observe(el);
+      resizeObserver.observe(el)
       return () => {
-        resizeObserver.disconnect();
-      };
+        resizeObserver.disconnect()
+      }
     },
     [],
     target
-  );
+  )
 
-  return size;
-};
+  return size
+}
 
-export default useSize;
+export default useSize

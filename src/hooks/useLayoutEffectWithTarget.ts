@@ -1,36 +1,34 @@
-import type { useLayoutEffect, DependencyList, EffectCallback } from 'react';
-import React, { useEffect, useRef } from 'react';
-import useUnmount from './useUnmount';
-import { getTargetElement, depsAreSame } from '@/utils';
-import type { BasicTarget } from './typings';
+import type { useLayoutEffect, DependencyList, EffectCallback } from 'react'
+import React, { useEffect, useRef } from 'react'
+import useUnmount from './useUnmount'
+import { getTargetElement, depsAreSame } from '@/utils'
+import type { BasicTarget } from './typings'
 
-const createEffectWithTarget = (
-  useEffectType: typeof useEffect | typeof useLayoutEffect
-) => {
+const createEffectWithTarget = (useEffectType: typeof useEffect | typeof useLayoutEffect) => {
   const useEffectWithTarget = (
     effect: EffectCallback,
     deps: DependencyList,
     target: BasicTarget<any> | BasicTarget<any>[]
   ) => {
-    const hasInitRef = useRef(false);
+    const hasInitRef = useRef(false)
 
-    const lastElementRef = useRef<(Element | null)[]>([]);
-    const lastDepsRef = useRef<DependencyList>([]);
+    const lastElementRef = useRef<(Element | null)[]>([])
+    const lastDepsRef = useRef<DependencyList>([])
 
-    const unLoadRef = useRef<any>();
+    const unLoadRef = useRef<any>()
 
     useEffectType(() => {
-      const targets = Array.isArray(target) ? target : [target];
-      const els = targets.map((item) => getTargetElement(item));
+      const targets = Array.isArray(target) ? target : [target]
+      const els = targets.map(item => getTargetElement(item))
 
       // init run
       if (!hasInitRef.current) {
-        hasInitRef.current = true;
-        lastElementRef.current = els;
-        lastDepsRef.current = deps;
+        hasInitRef.current = true
+        lastElementRef.current = els
+        lastDepsRef.current = deps
 
-        unLoadRef.current = effect();
-        return;
+        unLoadRef.current = effect()
+        return
       }
 
       if (
@@ -38,22 +36,22 @@ const createEffectWithTarget = (
         !depsAreSame(els, lastElementRef.current) ||
         !depsAreSame(deps, lastDepsRef.current)
       ) {
-        unLoadRef.current?.();
+        unLoadRef.current?.()
 
-        lastElementRef.current = els;
-        lastDepsRef.current = deps;
-        unLoadRef.current = effect();
+        lastElementRef.current = els
+        lastDepsRef.current = deps
+        unLoadRef.current = effect()
       }
-    });
+    })
 
     useUnmount(() => {
-      unLoadRef.current?.();
-      hasInitRef.current = false;
-    });
-  };
-  return useEffectWithTarget;
-};
+      unLoadRef.current?.()
+      hasInitRef.current = false
+    })
+  }
+  return useEffectWithTarget
+}
 
-const useEffectWithTarget = createEffectWithTarget(React.useLayoutEffect);
+const useEffectWithTarget = createEffectWithTarget(React.useLayoutEffect)
 
-export default useEffectWithTarget;
+export default useEffectWithTarget

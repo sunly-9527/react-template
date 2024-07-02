@@ -1,15 +1,15 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react'
 
 const useUnmount = (fn: () => void) => {
-  const ref = useRef(fn);
-  ref.current = fn;
+  const ref = useRef(fn)
+  ref.current = fn
 
   useEffect(
     () => () => {
-      ref.current();
+      ref.current()
     },
     []
-  );
-};
+  )
+}
 
-export default useUnmount;
+export default useUnmount
