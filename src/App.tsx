@@ -1,6 +1,9 @@
 import { useState, useRef, useMemo } from 'react';
 import { useRequest, useVirtualList } from '@/hooks';
 import normalImg from '@/assets/test.jpg';
+import './App.css';
+import globalStyle from './global.less';
+import author from '@/assets/author-info.json'
 
 interface IState {
   name: string;
@@ -18,6 +21,7 @@ function changeUsername(
 }
 
 function App() {
+
   const [authorInfo, setAuthorInfo] = useState<IState>({ name: '', age: 26 });
   const containerRef = useRef(null);
   const wrapperRef = useRef(null);
@@ -33,6 +37,8 @@ function App() {
       }
     },
   });
+  
+  console.log(author, globalStyle)
 
   const originalList = useMemo(() => Array.from(Array(99999).keys()), []);
 
@@ -44,7 +50,7 @@ function App() {
   });
 
   return (
-    <div className='app'>
+    <div className={globalStyle?.app}>
       <h3>webpack5 + react18 + typescript4.x </h3>
       <p>author：{authorInfo.name}</p>
       <p>age：{authorInfo.age}</p>
@@ -65,7 +71,6 @@ function App() {
         >
           {loading ? 'Loading' : 'Edit'}
         </button>
-        {JSON.stringify(result)}
       </div>
 
       <h3>虚拟滚动列表</h3>
