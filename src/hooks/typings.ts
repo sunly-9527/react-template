@@ -1,4 +1,4 @@
-import type { DependencyList } from 'react';
+import type { DependencyList, MutableRefObject } from 'react';
 
 export type Service<TData, TParams extends any[]> = (
   ...args: TParams
@@ -92,3 +92,12 @@ export interface PluginReturn<TData, TParams extends any[]> {
   onCancel?: () => void;
   onMutate?: (data: TData) => void;
 }
+
+type TargetType = HTMLElement | Element | Window | Document;
+
+type TargetValue<T> = T | undefined | null;
+
+export type BasicTarget<T extends TargetType = Element> =
+  | (() => TargetValue<T>)
+  | TargetValue<T>
+  | MutableRefObject<TargetValue<T>>;

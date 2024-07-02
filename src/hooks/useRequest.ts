@@ -72,7 +72,6 @@ class Fetch<TData, TParams extends any[]> {
       return res;
     } catch (error: any) {
       if (currentCount !== this.count) {
-        // prevent run.then when request is canceled
         return new Promise(() => {});
       }
 
@@ -159,12 +158,12 @@ const useRequest = <TData, TParams extends any[]>(
     data: fetchInstance.state.data,
     error: fetchInstance.state.error,
     params: fetchInstance.state.params || [],
-    // cancel: useMemoizedFn(fetchInstance.cancel.bind(fetchInstance)),
-    // refresh: useMemoizedFn(fetchInstance.refresh.bind(fetchInstance)),
-    // refreshAsync: useMemoizedFn(fetchInstance.refreshAsync.bind(fetchInstance)),
+    cancel: useMemoizedFn(fetchInstance.cancel.bind(fetchInstance)),
+    refresh: useMemoizedFn(fetchInstance.refresh.bind(fetchInstance)),
+    refreshAsync: useMemoizedFn(fetchInstance.refreshAsync.bind(fetchInstance)),
     run: useMemoizedFn(fetchInstance.run.bind(fetchInstance)),
-    // runAsync: useMemoizedFn(fetchInstance.runAsync.bind(fetchInstance)),
-    // mutate: useMemoizedFn(fetchInstance.mutate.bind(fetchInstance)),
+    runAsync: useMemoizedFn(fetchInstance.runAsync.bind(fetchInstance)),
+    mutate: useMemoizedFn(fetchInstance.mutate.bind(fetchInstance)),
   };
 };
 
