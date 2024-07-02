@@ -12,13 +12,13 @@ const LazyWrapper: FC<LazyWrapperProps> = ({ path, type = 'normal' }) => {
     prefetch: () =>
       import(
         /* webpackChunkName: "PreFetchDemo" */
-        /*webpackPrefetch: true*/
+        /* webpackPrefetch: true */
         PREFIX_PATH
       ),
     preload: () =>
       import(
         /* webpackChunkName: "PreloadDemo" */
-        /*webpackPreload: true*/
+        /* webpackPreload: true */
         PREFIX_PATH
       ),
     normal: () => import(PREFIX_PATH)

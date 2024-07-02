@@ -96,8 +96,8 @@ const useVirtualList = <T = any>(list: T[], options: Options<T>) => {
 
       const offsetTop = getDistanceTop(start)
 
-      wrapper.style.height = totalHeight - offsetTop + 'px'
-      wrapper.style.marginTop = offsetTop + 'px'
+      wrapper.style.height = `${totalHeight - offsetTop}px`
+      wrapper.style.marginTop = `${offsetTop}px`
       setTargetList(
         list.slice(start, end).map((ele, index) => ({
           data: ele,

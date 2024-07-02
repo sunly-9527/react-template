@@ -4,11 +4,11 @@
 
 ```js
 // 定义一个高阶组件
-const withFoo = (WrappedComponent) => {
+const withFoo = WrappedComponent => {
   return class extends React.Component {
     render() {
-      return <WrappedComponent {...this.props} foo='foo' />;
+      return <WrappedComponent {...this.props} foo='foo' />
     }
-  };
-};
+  }
+}
 ```

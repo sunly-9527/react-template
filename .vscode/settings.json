@@ -30,4 +30,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "javascript.validate.enable": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": true,
+    "source.fixAll.markdownlint": true,
+    "source.fixAll.eslint": true
+  },
+  "stylelint.validate": ["css", "less", "sass", "stylus", "postcss"]
 }

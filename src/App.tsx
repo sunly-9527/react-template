@@ -2,14 +2,18 @@ import { useState, useRef, useMemo } from 'react'
 import './App.css'
 import useRequest from '@/hooks/useRequest'
 import normalImg from '@/assets/test.jpg'
-import './App.css'
-import globalStyle from './global.less'
 import { useVirtualList } from './hooks'
 
 interface IState {
   name: string
   age: number
 }
+
+function hello(x: string) {
+  return x
+}
+
+hello(111)
 
 function changeUsername(username: string): Promise<{ success: boolean; username: string }> {
   return new Promise(resolve => {
@@ -24,11 +28,7 @@ function App() {
   const containerRef = useRef(null)
   const wrapperRef = useRef(null)
 
-  const {
-    loading,
-    run,
-    data: result
-  } = useRequest(changeUsername, {
+  const { loading, run } = useRequest(changeUsername, {
     manual: true,
     onSuccess: result => {
       if (result.success) {
@@ -36,8 +36,6 @@ function App() {
       }
     }
   })
-
-  console.log(globalStyle)
 
   const originalList = useMemo(() => Array.from(Array(99999).keys()), [])
 

@@ -104,13 +104,11 @@ class Fetch<TData, TParams extends any[]> {
   }
 
   refresh() {
-    // @ts-ignore
-    this.run(...(this.state.params || []))
+    this.run(...((this.state.params || []) as any))
   }
 
   refreshAsync() {
-    // @ts-ignore
-    return this.runAsync(...(this.state.params || []))
+    return this.runAsync(...((this.state.params || []) as any))
   }
 
   mutate(data?: TData | ((oldData?: TData) => TData | undefined)) {
@@ -142,10 +140,8 @@ const useRequest = <TData, TParams extends any[]>(
 
   useMount(() => {
     if (!options?.manual) {
-      // useCachePlugin can set fetchInstance.state.params from cache when init
       const params = fetchInstance.state.params || options?.defaultParams || []
-      // @ts-ignore
-      fetchInstance.run(...params)
+      fetchInstance.run(...(params as any))
     }
   })
 
