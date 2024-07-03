@@ -9,12 +9,6 @@ interface IState {
   age: number
 }
 
-function hello(x: string) {
-  return x
-}
-
-hello(111)
-
 function changeUsername(username: string): Promise<{ success: boolean; username: string }> {
   return new Promise(resolve => {
     setTimeout(() => {
