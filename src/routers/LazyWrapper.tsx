@@ -8,7 +8,7 @@ interface LazyWrapperProps {
 const LazyWrapper: FC<LazyWrapperProps> = ({ path, type = 'normal' }) => {
   const importMap = {
     prefetch: import(
-      /* webpackChunkName: "PreFetchDemo" */
+      /* webpackChunkName: "About" */
       /* webpackPrefetch: true */
       `@/pages/${path}`
     ),
@@ -19,6 +19,8 @@ const LazyWrapper: FC<LazyWrapperProps> = ({ path, type = 'normal' }) => {
     ),
     normal: import(`@/pages/${path}`)
   }
+
+  console.log('LazyWrapper', type, path)
 
   const LazyComponent = lazy(() => importMap[type])
 

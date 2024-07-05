@@ -3,6 +3,7 @@ import './App.css'
 import useRequest from '@/hooks/useRequest'
 import normalImg from '@/assets/test.jpg'
 import { useVirtualList } from './hooks'
+import { getRecommendList } from '@/services'
 
 interface IState {
   name: string
@@ -28,6 +29,12 @@ function App() {
       if (result.success) {
         setAuthorInfo({ ...authorInfo, name: result.username })
       }
+    }
+  })
+  useRequest(getRecommendList, {
+    manual: false,
+    onSuccess: result => {
+      console.log(result)
     }
   })
 
