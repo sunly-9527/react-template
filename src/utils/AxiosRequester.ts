@@ -1,9 +1,9 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios'
+import { message } from 'antd'
 
 const { REACT_APP_API_URL } = process.env || {}
 
 const createAxiosInterceptors = (config?: AxiosRequestConfig): AxiosInstance => {
-  // let showLoading = true
   const axiosInstance = axios.create({
     timeout: 2000,
     headers: {
@@ -22,7 +22,7 @@ const createAxiosInterceptors = (config?: AxiosRequestConfig): AxiosInstance => 
       return config
     },
     err => {
-      console.error(`网络请求错误：${err}`)
+      message.error(`网络请求错误：${err}.`)
       return Promise.reject(err)
     }
   )
@@ -37,7 +37,7 @@ const createAxiosInterceptors = (config?: AxiosRequestConfig): AxiosInstance => 
       return res
     },
     err => {
-      console.error(`网络请求响应错误：${err}`)
+      message.error(`网络请求响应错误：${err}`)
       return Promise.reject(err)
     }
   )

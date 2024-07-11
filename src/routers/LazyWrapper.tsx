@@ -20,8 +20,6 @@ const LazyWrapper: FC<LazyWrapperProps> = ({ path, type = 'normal' }) => {
     normal: import(`@/pages/${path}`)
   }
 
-  console.log('LazyWrapper', type, path)
-
   const LazyComponent = lazy(() => importMap[type])
 
   return (
