@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import './styles.less'
 
 interface SelectUserProps {
   options: any[] // 选项
@@ -13,7 +14,7 @@ const SelectUser = memo((props: SelectUserProps) => {
 
   return (
     <div
-      className='selectWrap'
+      className='select-wrap'
       style={{
         display: `${visible ? 'block' : 'none'}`,
         position: 'absolute',
@@ -25,8 +26,8 @@ const SelectUser = memo((props: SelectUserProps) => {
         {options.map(item => {
           return (
             <li key={item.id} onClick={() => onSelect(item)}>
-              <img src={item.wechatAvatarUrl} alt='' />
-              <span>{item.name}</span>
+              <img src={item.avatarUrl} alt='img' />
+              <span className='at-title'>{item.name}</span>
             </li>
           )
         })}

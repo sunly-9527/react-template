@@ -8,3 +8,5 @@ export type BasicTarget<T extends TargetType = Element> =
   | (() => TargetValue<T>)
   | TargetValue<T>
   | MutableRefObject<TargetValue<T>>
+
+export type DebouncedFunction<T extends (...args: any[]) => any> = (...args: Parameters<T>) => void

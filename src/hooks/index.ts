@@ -8,7 +8,8 @@ import useRequest from './useRequest'
 import useLatest from './useLatest'
 import useVirtualList from './useVirtualList'
 import useSize from './useSize'
-//
+import useTheme from './useTheme'
+
 export {
   useCreation,
   useMemoizedFn,
@@ -19,5 +20,6 @@ export {
   useRequest,
   useVirtualList,
   useSize,
+  useTheme,
   useLatest
 }

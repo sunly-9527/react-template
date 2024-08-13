@@ -13,12 +13,12 @@ console.log('BASE_ENV', process.env.BASE_ENV)
 const styleLoadersArray = [
   isDev ? 'style-loader' : MiniCssExtractPlugin.loader, // 开发环境使用style-looader,打包模式抽离css
   {
-    loader: 'css-loader',
-    options: {
-      modules: {
-        localIdentName: '[path][name]__[local]--[hash:5]'
-      }
-    }
+    loader: 'css-loader'
+    // options: {
+    //   modules: {
+    //     localIdentName: '[path][name]__[local]--[hash:5]'
+    //   }
+    // }
   },
   // 添加 postcss-loader
   'postcss-loader'

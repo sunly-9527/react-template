@@ -13,11 +13,11 @@ interface Options<T> {
   containerTarget: BasicTarget
   wrapperTarget: BasicTarget
   itemHeight: number | ItemHeight<T>
-  overscan?: number
+  overScan?: number
 }
 
 const useVirtualList = <T = any>(list: T[], options: Options<T>) => {
-  const { containerTarget, wrapperTarget, itemHeight, overscan = 5 } = options
+  const { containerTarget, wrapperTarget, itemHeight, overScan = 5 } = options
 
   const itemHeightRef = useLatest(itemHeight)
   const size = useSize(containerTarget)
@@ -91,8 +91,8 @@ const useVirtualList = <T = any>(list: T[], options: Options<T>) => {
       const offset = getOffset(scrollTop)
       const visibleCount = getVisibleCount(clientHeight, offset)
 
-      const start = Math.max(0, offset - overscan)
-      const end = Math.min(list.length, offset + visibleCount + overscan)
+      const start = Math.max(0, offset - overScan)
+      const end = Math.min(list.length, offset + visibleCount + overScan)
 
       const offsetTop = getDistanceTop(start)
 

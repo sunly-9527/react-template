@@ -3,6 +3,7 @@ import { RouterProvider } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import routers from './routers'
 import stores from './stores'
+import './App.css'
 
 const root = document.querySelector('#root')
 if (root) {

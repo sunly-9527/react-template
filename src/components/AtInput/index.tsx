@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import SelectUser from './SelectUser'
-import styles from './styles.less'
+import './styles.less'
 
 interface AtInputProps {
   height?: number
@@ -63,14 +63,14 @@ const AtInput = (props: AtInputProps) => {
     if (lastAtIndex !== -1) {
       getCursorPosition()
       const searchStr = cursorBeforeStr.slice(lastAtIndex + 1)
-      // if (!StringTools.isIncludeSpacesOrLineBreak(searchStr)) {
-      setSearchStr(searchStr)
-      fetchOptions(searchStr)
-      setShow(true)
-      // } else {
-      //   setShow(false)
-      //   setSearchStr('')
-      // }
+      if (!searchStr) {
+        setSearchStr(searchStr)
+        fetchOptions(searchStr)
+        setShow(true)
+      } else {
+        setShow(false)
+        setSearchStr('')
+      }
     } else {
       setShow(false)
     }
@@ -113,8 +113,7 @@ const AtInput = (props: AtInputProps) => {
   }
 
   const onEditorChange = (event: any) => {
-    const { value } = event.target
-    setContent(value)
+    setContent(event.target.innerText)
     onObserveInput()
   }
 
@@ -129,7 +128,7 @@ const AtInput = (props: AtInputProps) => {
     const spans = document.querySelectorAll('.at-span')
     const ids = new Set()
     spans.forEach(span => ids.add(span.id))
-    return selectUserList.filter(s => ids.has(s.id))
+    return selectUserList.filter(s => ids.has(String(s.id)))
   }
 
   useEffect(() => {
@@ -146,7 +145,7 @@ const AtInput = (props: AtInputProps) => {
       <div
         id='atInput'
         ref={atRef}
-        className={styles.editorDiv}
+        className='editor-div'
         contentEditable
         onInput={onEditorChange}
         onClick={onEditorClick}
