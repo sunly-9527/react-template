@@ -67,6 +67,7 @@ const useDynamicList = <T>(initialList: T[] = []) => {
       try {
         keyList.current.splice(index, 1)
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(e)
       }
       return temp
@@ -113,6 +114,7 @@ const useDynamicList = <T>(initialList: T[] = []) => {
         keyTemp.splice(newIndex, 0, keyList.current[oldIndex])
         keyList.current = keyTemp
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(e)
       }
 
@@ -131,6 +133,7 @@ const useDynamicList = <T>(initialList: T[] = []) => {
     try {
       keyList.current = keyList.current.slice(0, keyList.current.length - 1)
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e)
     }
 
@@ -148,6 +151,7 @@ const useDynamicList = <T>(initialList: T[] = []) => {
     try {
       keyList.current = keyList.current.slice(1, keyList.current.length)
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e)
     }
     setList(l => l.slice(1, l.length))

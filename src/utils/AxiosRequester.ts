@@ -34,7 +34,8 @@ const createAxiosInterceptors = (config?: AxiosRequestConfig): AxiosInstance => 
         localStorage.removeItem('token')
         return Promise.reject(res.data)
       }
-      return res
+
+      return res?.data || []
     },
     err => {
       message.error(`网络请求响应错误：${err}`)

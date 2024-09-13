@@ -91,6 +91,7 @@ class Fetch<TData, TParams extends any[]> {
   run(...params: TParams) {
     this.runAsync(...params).catch(error => {
       if (!this.options.onError) {
+        // eslint-disable-next-line no-console
         console.error(error)
       }
     })
