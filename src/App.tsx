@@ -4,7 +4,7 @@ import type { ProTableColumn } from './components/ProTable'
 import { useRef } from 'react'
 import { Button, Space, Tag } from 'antd'
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import MarkdownEditor from '@/components/MarkdownEditor';
+import MarkdownEditor from './components/MarkdownEditor';
 // 定义数据类型
 interface User {
   id: number
@@ -301,12 +301,17 @@ function App() {
         }}
       />
       <ProTable />
-      <MarkdownEditor ossConfig={{
+      {/* <MarkdownEditor ossConfig={{
         region: 'oss-cn-hangzhou',
         accessKeyId: 'LTAI5t7mMtUt1hZgxSgGo51F',
         accessKeySecret: 'KxgMGLVxWggw8QbGonT2kPwxx6wIH8',
         bucket: 'ly-hz-blog-oss',
-      }} />
+      }} /> */}
+      <MarkdownEditor
+        initialValue="## 欢迎使用 Markdown 编辑器\n\n这是一个基于 React 和 TypeScript 的 Markdown 编辑器。\n\n## 功能特点\n\n- 实时预览\n- 图片上传\n- 导入/导出文档\n- 全屏编辑"
+        onSave={(value) => { console.log('保存', value) }}
+      />
+
     </div>
   )
 }

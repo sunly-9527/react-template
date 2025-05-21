@@ -41,6 +41,9 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
+      marked:
+        specifier: ^15.0.12
+        version: 15.0.12
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -4330,6 +4333,11 @@ packages:
   markdownlint@0.34.0:
     resolution: {integrity: sha512-qwGyuyKwjkEMOJ10XN6OTKNOVYvOIi35RNvDLNxTof5s8UmyGHlCdpngRHoRGNvQVGuxO3BJ7uNSgdeX166WXw==}
     engines: {node: '>=18'}
+
+  marked@15.0.12:
+    resolution: {integrity: sha512-8dD6FusOQSrpv9Z1rdNMdlSgQOIP880DHqnohobOmYLElGEqAL/JvxvuxZO16r4HtjTlfPRDC1hbvxC9dPN2nA==}
+    engines: {node: '>= 18'}
+    hasBin: true
 
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
@@ -11401,6 +11409,8 @@ snapshots:
     dependencies:
       markdown-it: 14.1.0
       markdownlint-micromark: 0.1.9
+
+  marked@15.0.12: {}
 
   math-intrinsics@1.1.0: {}
 
